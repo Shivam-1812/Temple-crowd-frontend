@@ -10,11 +10,15 @@ import TripPlanner from './pages/Devotee/TripPlanner';
 import HotelBooking from './pages/Devotee/HotelBooking';
 import CrowdMap from './pages/Devotee/CrowdMap';
 import Emergency from './pages/Devotee/Emergency';
-import AdminDashboard from './pages/Admin/Dashboard';
+
+// Admin Pages - Updated imports
+import AdminDashboard from './pages/Admin/AdminDashboard';
 import CrowdAnalytics from './pages/Admin/CrowdAnalytics';
-import TicketManagement from './pages/Admin/TicketManagement';
-import ParkingTraffic from './pages/Admin/ParkingTraffic';
-import EmergencyAlerts from './pages/Admin/EmergencyAlerts';
+import VIPBooking from './pages/Admin/VIPBooking';
+import ResourceAllocation from './pages/Admin/ResourceAllocation';
+import IncomingRequests from './pages/Admin/IncomingRequests';
+import EmployeeManagement from './pages/Admin/EmployeeManagement';
+import TrafficAlerts from './pages/Admin/TrafficAlerts';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, requiredRole }) => {
@@ -91,7 +95,7 @@ function AppRoutes() {
         } 
       />
       
-      {/* Admin Routes */}
+      {/* Admin Routes - Updated to match new component structure */}
       <Route 
         path="/admin/dashboard" 
         element={
@@ -101,7 +105,7 @@ function AppRoutes() {
         } 
       />
       <Route 
-        path="/admin/crowd" 
+        path="/admin/crowd-analytics" 
         element={
           <ProtectedRoute requiredRole="admin">
             <CrowdAnalytics />
@@ -109,26 +113,42 @@ function AppRoutes() {
         } 
       />
       <Route 
-        path="/admin/tickets" 
+        path="/admin/vip-booking" 
         element={
           <ProtectedRoute requiredRole="admin">
-            <TicketManagement />
+            <VIPBooking />
           </ProtectedRoute>
         } 
       />
       <Route 
-        path="/admin/traffic" 
+        path="/admin/resource-allocation" 
         element={
           <ProtectedRoute requiredRole="admin">
-            <ParkingTraffic />
+            <ResourceAllocation />
           </ProtectedRoute>
         } 
       />
       <Route 
-        path="/admin/emergency" 
+        path="/admin/incoming-requests" 
         element={
           <ProtectedRoute requiredRole="admin">
-            <EmergencyAlerts />
+            <IncomingRequests />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin/employee-management" 
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <EmployeeManagement />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin/traffic-alerts" 
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <TrafficAlerts />
           </ProtectedRoute>
         } 
       />

@@ -1,83 +1,163 @@
-import React, { useState } from 'react';
-import { TrendingUp, Ticket, Car, Bell } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import Navbar from '../../components/Navbar';
-import Sidebar from '../../components/Sidebar';
-import Card from '../../components/Card';
-import { dummyData } from '../../data/dummyData';
+import React from 'react'
 
 const CrowdAnalytics = () => {
-  const navigate = useNavigate();
-  const [activePage, setActivePage] = useState('crowd');
-  
-  const menuItems = [
-    { id: 'crowd', label: 'Crowd Analytics', icon: <TrendingUp className="w-5 h-5" /> },
-    { id: 'tickets', label: 'Ticket Management', icon: <Ticket className="w-5 h-5" /> },
-    { id: 'traffic', label: 'Parking & Traffic', icon: <Car className="w-5 h-5" /> },
-    { id: 'emergency', label: 'Emergency Alerts', icon: <Bell className="w-5 h-5" /> }
-  ];
+  // Sample data for the line chart
+  const timeData = ['9 AM', '12 PM', '3 PM', '6 PM', '9 PM']
+  const currentFlow = [120, 450, 800, 650, 300]
+  const predictedFlow = [100, 400, 750, 700, 350]
 
-  const handleNavigation = (id) => {
-    setActivePage(id);
-    navigate(`/admin/${id}`);
-  };
+  const maxValue = Math.max(...currentFlow, ...predictedFlow)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <Navbar role="admin" />
-      <div className="flex">
-        <Sidebar items={menuItems} active={activePage} setActive={handleNavigation} />
-        <div className="flex-1 p-8 lg:ml-64">
-          <h1 className="text-3xl font-bold text-slate-800 mb-8">Crowd Analytics</h1>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <h3 className="text-xl font-bold text-slate-800 mb-4">Crowd Trend (Today)</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={dummyData.crowdTrend}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="count" stroke="#4f46e5" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </Card>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6 pb-2 border-b-2 border-orange-500">
+        Crowd Analytics Over Time
+      </h1>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Current Crowd Flow Line Chart */}
+        <div className="border border-gray-300 p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Crowd Flow (Current)</h3>
+          <div className="h-64 relative">
+            {/* Y-axis labels */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-600">
+              <span>{maxValue}</span>
+              <span>{Math.round(maxValue * 0.75)}</span>
+              <span>{Math.round(maxValue * 0.5)}</span>
+              <span>{Math.round(maxValue * 0.25)}</span>
+              <span>0</span>
+            </div>
             
-            <Card>
-              <h3 className="text-xl font-bold text-slate-800 mb-4">Temple-wise Distribution</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={dummyData.templeCrowd}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="temple" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="visitors" fill="#14b8a6" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Card>
+            {/* Chart area */}
+            <div className="ml-8 h-full relative">
+              {/* Grid lines */}
+              <div className="absolute inset-0 flex flex-col justify-between">
+                {[0, 1, 2, 3, 4].map(i => (
+                  <div key={i} className="border-t border-gray-200"></div>
+                ))}
+              </div>
+              
+              {/* Line chart */}
+              <svg className="w-full h-full" viewBox={`0 0 ${timeData.length * 100} 100`} preserveAspectRatio="none">
+                {/* Current Flow Line */}
+                <path
+                  d={`M 0,${100 - (currentFlow[0] / maxValue) * 100} ${
+                    currentFlow.map((value, index) => 
+                      `L ${(index / (timeData.length - 1)) * 100},${100 - (value / maxValue) * 100}`
+                    ).join(' ')
+                  }`}
+                  fill="none"
+                  stroke="#ff6600"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                
+                {/* Data points */}
+                {currentFlow.map((value, index) => (
+                  <circle
+                    key={index}
+                    cx={`${(index / (timeData.length - 1)) * 100}`}
+                    cy={`${100 - (value / maxValue) * 100}`}
+                    r="3"
+                    fill="#ff6600"
+                  />
+                ))}
+              </svg>
+              
+              {/* X-axis labels */}
+              <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-600 mt-2">
+                {timeData.map((time, index) => (
+                  <span key={index} className="transform -rotate-45 origin-top-left">
+                    {time}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-            {dummyData.crowdData.map((crowd) => (
-              <Card key={crowd.temple} className="text-center">
-                <h4 className="font-bold text-slate-800 mb-2">{crowd.temple}</h4>
-                <div className={`text-4xl font-bold mb-2 ${
-                  crowd.level === 'high' ? 'text-red-500' : crowd.level === 'medium' ? 'text-yellow-500' : 'text-green-500'
-                }`}>
-                  {crowd.percentage}%
-                </div>
-                <p className="text-sm text-slate-600 capitalize">{crowd.level} crowd</p>
-              </Card>
-            ))}
+        </div>
+        
+        {/* Predicted Crowd Flow Line Chart */}
+        <div className="border border-gray-300 p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Predicted Flow</h3>
+          <div className="h-64 relative">
+            {/* Y-axis labels */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 flex flex-col justify-between text-xs text-gray-600">
+              <span>{maxValue}</span>
+              <span>{Math.round(maxValue * 0.75)}</span>
+              <span>{Math.round(maxValue * 0.5)}</span>
+              <span>{Math.round(maxValue * 0.25)}</span>
+              <span>0</span>
+            </div>
+            
+            {/* Chart area */}
+            <div className="ml-8 h-full relative">
+              {/* Grid lines */}
+              <div className="absolute inset-0 flex flex-col justify-between">
+                {[0, 1, 2, 3, 4].map(i => (
+                  <div key={i} className="border-t border-gray-200"></div>
+                ))}
+              </div>
+              
+              {/* Line chart */}
+              <svg className="w-full h-full" viewBox={`0 0 ${timeData.length * 100} 100`} preserveAspectRatio="none">
+                {/* Predicted Flow Line */}
+                <path
+                  d={`M 0,${100 - (predictedFlow[0] / maxValue) * 100} ${
+                    predictedFlow.map((value, index) => 
+                      `L ${(index / (timeData.length - 1)) * 100},${100 - (value / maxValue) * 100}`
+                    ).join(' ')
+                  }`}
+                  fill="none"
+                  stroke="#4f46e5"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeDasharray="5,5"
+                />
+                
+                {/* Data points */}
+                {predictedFlow.map((value, index) => (
+                  <circle
+                    key={index}
+                    cx={`${(index / (timeData.length - 1)) * 100}`}
+                    cy={`${100 - (value / maxValue) * 100}`}
+                    r="3"
+                    fill="#4f46e5"
+                  />
+                ))}
+              </svg>
+              
+              {/* X-axis labels */}
+              <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-600 mt-2">
+                {timeData.map((time, index) => (
+                  <span key={index} className="transform -rotate-45 origin-top-left">
+                    {time}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
 
-export default CrowdAnalytics;
+      {/* Legend */}
+      <div className="flex justify-center gap-6 mt-4">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-0.5 bg-orange-500"></div>
+          <span className="text-sm text-gray-600">Current Flow</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-0.5 bg-indigo-500 border-dashed border"></div>
+          <span className="text-sm text-gray-600">Predicted Flow</span>
+        </div>
+      </div>
+
+      <p className="text-gray-600 mt-4 text-sm text-center">
+        *Real-time and predicted crowd flow based on historical data and AI analytics.*
+      </p>
+    </div>
+  )
+}
+
+export default CrowdAnalytics
