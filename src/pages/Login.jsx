@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Sun, User, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/logo.png'; // Add this import
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -43,20 +43,20 @@ const Login = () => {
       {/* Login Card */}
       <div className="relative w-full max-w-md">
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
-          {/* Header Section */}
+          {/* Header Section - Updated with Logo */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                <div className="relative bg-gradient-to-br from-orange-500 to-red-600 p-4 rounded-full">
-                  <MapPin className="w-12 h-12 text-white" />
+                <div className="relative bg-white p-2 rounded-full">
+                  <img 
+                    src={logo} 
+                    alt="Temple Logo" 
+                    className="w-20 h-20 object-contain" // Adjusted size to match previous icon size
+                  />
                 </div>
               </div>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-amber-600 bg-clip-text text-transparent mb-2">
-              Temple Darshan
-            </h1>
-            <p className="text-slate-600 font-medium">Crowd Management System</p>
             <div className="flex justify-center items-center gap-2 mt-3 text-sm text-slate-500">
               <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
               <span>Somnath</span>
