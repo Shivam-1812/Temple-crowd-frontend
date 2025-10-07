@@ -16,12 +16,6 @@ const Navbar = ({ role }) => {
               <p className="text-xs text-indigo-200">{role === 'admin' ? 'Admin Portal' : 'Devotee Portal'}</p>
             </div>
           </div>
-          <button 
-            onClick={logout} 
-            className="bg-indigo-700 hover:bg-indigo-900 px-4 py-2 rounded-lg transition"
-          >
-            Logout
-          </button>
         </div>
       </div>
     </nav>

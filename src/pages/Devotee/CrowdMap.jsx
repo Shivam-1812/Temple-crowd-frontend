@@ -3,6 +3,7 @@ import { Users, MapPin } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Card from '../../components/Card';
 import { dummyData } from '../../data/dummyData';
+import crowdMapImage from '../../assets/traffic-map.png';
 
 const CrowdMap = () => {
   const getColor = (level) => {
@@ -19,7 +20,8 @@ const CrowdMap = () => {
           <Users className="w-6 h-6 mr-2 text-indigo-600" />
           Live Crowd Heatmap
         </h2>
-        
+
+        {/* Crowd Level Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {dummyData.crowdData.map((crowd) => (
             <Card key={crowd.temple}>
@@ -39,18 +41,21 @@ const CrowdMap = () => {
                   ></div>
                 </div>
               </div>
-              <p className="text-sm text-slate-600 capitalize">Status: {crowd.level} congestion</p>
+              <p className="text-sm text-slate-600 capitalize">
+                Status: {crowd.level} congestion
+              </p>
             </Card>
           ))}
         </div>
-        
+
+        {/* Crowd Heatmap Image Section */}
         <Card>
-          <div className="bg-slate-200 rounded-lg h-96 flex items-center justify-center relative">
-            <div className="text-center">
-              <MapPin className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-              <p className="text-slate-600">Temple Crowd Heatmap</p>
-              <p className="text-sm text-slate-500 mt-4">🟢 Low | 🟡 Medium | 🔴 High</p>
-            </div>
+          <div className="relative h-96 rounded-lg overflow-hidden">
+            <img
+              src={crowdMapImage}
+              alt="Temple Crowd Heatmap"
+              className="object-cover w-full h-full opacity-90"
+            />
           </div>
         </Card>
       </div>

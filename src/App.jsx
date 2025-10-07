@@ -10,6 +10,7 @@ import TripPlanner from './pages/Devotee/TripPlanner';
 import HotelBooking from './pages/Devotee/HotelBooking';
 import CrowdMap from './pages/Devotee/CrowdMap';
 import Emergency from './pages/Devotee/Emergency';
+import TrafficParking from './pages/Devotee/TrafficParking';
 
 // Admin Pages - Updated imports
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -94,7 +95,15 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      
+      <Route
+        path="/devotee/traffic"
+        element={
+          <ProtectedRoute requiredRole="devotee">
+            <TrafficParking />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Admin Routes - Updated to match new component structure */}
       <Route 
         path="/admin/dashboard" 
